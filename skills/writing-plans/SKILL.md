@@ -15,16 +15,64 @@ Assume they are a skilled developer, but know almost nothing about our toolset o
 
 **Context:** This should be run in a dedicated worktree (created by brainstorming skill).
 
-**Branch-aware path:**
-- Get branch name: `git rev-parse --abbrev-ref HEAD`
+**Feature-aware path:**
+- **Feature name:** Use the same feature name from the brainstorming session (stored in the spec file's folder)
 - If on `main`, warn: "You're on main branch. Implementation plans should be on a feature branch."
-- Create folder if needed: `mkdir -p docs/superpowers/specs/<branch-name>`
-- Save plans to: `docs/superpowers/specs/<branch-name>/YYYY-MM-DD-implementation.md`
+- Create folder if needed: `mkdir -p docs/superpowers/specs/<feature-name>`
+- Save plans to: `docs/superpowers/specs/<feature-name>/implementation.md`
+- **Rolling document logic:**
+  - If `implementation.md` already exists: append a new iteration section (see format below)
+  - If no existing file: create fresh with iteration 1 header
 - (User preferences for plan location override this default)
 
 ## Scope Check
 
 If the spec covers multiple independent subsystems, it should have been broken into sub-project specs during brainstorming. If it wasn't, suggest breaking this into separate plans — one per subsystem. Each plan should produce working, testable software on its own.
+
+## Rolling Document Format
+
+When appending to an existing `implementation.md`, use this structure:
+
+```markdown
+---
+
+## Iteration N — YYYY-MM-DD
+
+**Spec:** `design.md` (link to or reference the design iteration this implements)
+
+### Task N: [Component Name]
+
+**Files:**
+- Create: `exact/path/to/file.py`
+- Modify: `exact/path/to/existing.py:123-145`
+- Test: `tests/exact/path/to/test.py`
+
+- [ ] **Step 1: Write the failing test**
+[... rest of task steps ...]
+```
+
+For the first iteration, start with:
+
+```markdown
+# [Feature Name] Implementation Plan
+
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+
+**Goal:** [One sentence describing what this builds]
+
+**Spec:** `design.md`
+
+**Architecture:** [2-3 sentences about approach]
+
+**Tech Stack:** [Key technologies/libraries]
+
+---
+
+## Iteration 1 — YYYY-MM-DD
+
+### Task 1: [Component Name]
+[... tasks ...]
+```
 
 ## File Structure
 
@@ -139,7 +187,7 @@ If you find issues, fix them inline. No need to re-review — just fix and move 
 
 After saving the plan, offer execution choice:
 
-**"Plan complete and saved to `docs/superpowers/specs/<branch-name>/YYYY-MM-DD-implementation.md`. Two execution options:**
+**"Plan complete and saved to `docs/superpowers/specs/<feature-name>/implementation.md`. Two execution options:"**
 
 **1. Subagent-Driven (recommended)** - I dispatch a fresh subagent per task, review between tasks, fast iteration
 

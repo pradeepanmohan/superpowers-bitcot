@@ -157,10 +157,10 @@ Agent tool:
     ## Files to Analyze
 
     **Spec Design Document:**
-    READ: docs/superpowers/specs/feature-auth/2026-04-08-auth-system-design.md
+    READ: docs/superpowers/specs/<feature-name>/design.md
 
     **Implementation Plan:**
-    READ: docs/superpowers/specs/feature-auth/2026-04-08-auth-system-implementation.md
+    READ: docs/superpowers/specs/<feature-name>/implementation.md
 
     **Actual Changes:**
     Run: git diff main..HEAD --stat
