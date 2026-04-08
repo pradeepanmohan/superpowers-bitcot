@@ -15,7 +15,11 @@ Assume they are a skilled developer, but know almost nothing about our toolset o
 
 **Context:** This should be run in a dedicated worktree (created by brainstorming skill).
 
-**Save plans to:** `docs/superpowers/plans/YYYY-MM-DD-<feature-name>.md`
+**Branch-aware path:**
+- Get branch name: `git rev-parse --abbrev-ref HEAD`
+- If on `main`, warn: "You're on main branch. Implementation plans should be on a feature branch."
+- Create folder if needed: `mkdir -p docs/superpowers/specs/<branch-name>`
+- Save plans to: `docs/superpowers/specs/<branch-name>/YYYY-MM-DD-implementation.md`
 - (User preferences for plan location override this default)
 
 ## Scope Check
@@ -135,7 +139,7 @@ If you find issues, fix them inline. No need to re-review — just fix and move 
 
 After saving the plan, offer execution choice:
 
-**"Plan complete and saved to `docs/superpowers/plans/<filename>.md`. Two execution options:**
+**"Plan complete and saved to `docs/superpowers/specs/<branch-name>/YYYY-MM-DD-implementation.md`. Two execution options:**
 
 **1. Subagent-Driven (recommended)** - I dispatch a fresh subagent per task, review between tasks, fast iteration
 
