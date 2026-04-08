@@ -1,7 +1,7 @@
 {
   "name": "superpowers-bitcot",
   "description": "Bitcot's customized development workflow skills: TDD, debugging, collaboration patterns with branch-aware spec organization",
-  "version": "5.0.7-bitcot.1",
+  "version": "5.0.7-bitcot.2",
   "author": {
     "name": "Bitcot",
     "email": "dev@bitcot.com"
