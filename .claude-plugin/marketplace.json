@@ -1,6 +1,5 @@
 {
   "name": "bitcot-skills-marketplace",
-  "description": "Bitcot's Claude Code plugin marketplace with customized development workflow skills",
   "owner": {
     "name": "Bitcot",
     "email": "dev@bitcot.com"
