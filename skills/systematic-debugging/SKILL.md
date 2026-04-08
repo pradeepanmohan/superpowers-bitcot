@@ -294,6 +294,7 @@ These techniques are part of systematic debugging and available in this director
 **Related skills:**
 - **superpowers:test-driven-development** - For creating failing test case (Phase 4, Step 1)
 - **superpowers:verification-before-completion** - Verify fix worked before claiming success
+- **superpowers:spec-drift-check** - Verify fix aligns with any debugging notes/specs (via finishing-a-development-branch)
 - **superpowers:finishing-a-development-branch** - Handle merge/PR after fix (Phase 4, Step 6)
 - **superpowers:writing-changelog** - Document the fix (called by finishing-a-development-branch)
 

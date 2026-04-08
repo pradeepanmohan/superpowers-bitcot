@@ -29,6 +29,18 @@ For each task:
 3. Run verifications as specified
 4. Mark as completed
 
+### Step 2.5: Final Spec Alignment Check
+
+After all tasks complete, before Step 3:
+- **REQUIRED SUB-SKILL:** Use `superpowers:spec-drift-check`
+- Verify cumulative changes align with original spec
+- Pause if drift detected for user review
+- If user overrides, proceed with acknowledged drift
+
+**If no spec files exist for branch:**
+- Report: "No spec files found for branch. Skipping spec alignment check."
+- Continue to Step 3
+
 ### Step 3: Complete Development
 
 After all tasks complete and verified:
@@ -67,4 +79,5 @@ After all tasks complete and verified:
 **Required workflow skills:**
 - **superpowers:using-git-worktrees** - REQUIRED: Set up isolated workspace before starting
 - **superpowers:writing-plans** - Creates the plan this skill executes
+- **superpowers:spec-drift-check** - Verify alignment before completion (Step 2.5)
 - **superpowers:finishing-a-development-branch** - Complete development after all tasks
