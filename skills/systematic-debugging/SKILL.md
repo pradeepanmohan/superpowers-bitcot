@@ -212,6 +212,12 @@ You MUST complete each phase before proceeding to the next.
 
    This is NOT a failed hypothesis - this is a wrong architecture.
 
+6. **Complete the Work**
+   
+   **After fix is verified and tests pass:**
+   - Use `superpowers:finishing-a-development-branch` to handle merge/PR workflow and clean up worktree
+   - `finishing-a-development-branch` will invoke `superpowers:writing-changelog` to document the bug fix
+
 ## Red Flags - STOP and Follow Process
 
 If you catch yourself thinking:
@@ -263,6 +269,8 @@ If you catch yourself thinking:
 | **2. Pattern** | Find working examples, compare | Identify differences |
 | **3. Hypothesis** | Form theory, test minimally | Confirmed or new hypothesis |
 | **4. Implementation** | Create test, fix, verify | Bug resolved, tests pass |
+| **5. Architecture Check** | (If 3+ fixes failed) Question fundamentals | Refactor decision made |
+| **6. Completion** | Generate changelog, merge/PR | Work integrated |
 
 ## When Process Reveals "No Root Cause"
 
@@ -286,6 +294,8 @@ These techniques are part of systematic debugging and available in this director
 **Related skills:**
 - **superpowers:test-driven-development** - For creating failing test case (Phase 4, Step 1)
 - **superpowers:verification-before-completion** - Verify fix worked before claiming success
+- **superpowers:finishing-a-development-branch** - Handle merge/PR after fix (Phase 4, Step 6)
+- **superpowers:writing-changelog** - Document the fix (called by finishing-a-development-branch)
 
 ## Real-World Impact
 

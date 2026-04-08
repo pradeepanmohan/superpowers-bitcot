@@ -37,6 +37,13 @@ Stop. Don't proceed to Step 2.
 
 **If tests pass:** Continue to Step 2.
 
+### Step 1.5: Generate Changelog
+
+**After tests pass, document what was implemented:**
+
+- **REQUIRED SUB-SKILL:** Use `superpowers:writing-changelog` to create the changelog document
+- Changelog saved to: `docs/superpowers/specs/<branch-name>/YYYY-MM-DD-changelog.md`
+
 ### Step 2: Determine Base Branch
 
 ```bash
@@ -195,6 +202,10 @@ git worktree remove <worktree-path>
 **Called by:**
 - **subagent-driven-development** (Step 7) - After all tasks complete
 - **executing-plans** (Step 5) - After all batches complete
+- **systematic-debugging** (Phase 4, Step 6) - After bug fix verified
+
+**Calls:**
+- **superpowers:writing-changelog** (Step 1.5) - Generate changelog document
 
 **Pairs with:**
 - **using-git-worktrees** - Cleans up worktree created by that skill
