@@ -83,3 +83,63 @@ Before proposing changes to skill design, workflow philosophy, or architecture, 
 - One problem per PR
 - Test on at least one harness and report results in the environment table
 - Describe the problem you solved, not just what you changed
+
+
+
+## Unit Testing Rules
+
+ALWAYS run unit tests before committing. This is non-negotiable.
+
+### NestJS test commands
+- Run tests for changed files: `npm run test -- --findRelatedTests <file>`
+- Run full suite: `npm run test`
+- Run with coverage: `npm run test:cov`
+
+### Before ANY git commit you must:
+1. Run `npm run test -- --findRelatedTests` on every file you modified
+2. Confirm all tests pass in stdout
+3. If any test fails — fix it before committing, do not skip or comment it out
+4. Never use `--testPathIgnorePatterns` to hide failures
+
+### NestJS-specific rules
+- Every new `@Injectable()` service needs a corresponding `.spec.ts`
+- Every new `@Controller()` endpoint needs at least one request-level test
+- Mock all external dependencies with `jest.mock()` — never hit real DB or HTTP
+- Use `Test.createTestingModule()` for all NestJS unit tests
+
+---
+
+---
+
+## GitNexus Guard Rules
+Protect the project from architectural drift and high-impact regressions.
+
+### Spec-Driven Development (SDD)
+- **Mandatory Output**: You MUST create a design spec in `docs/superpowers/specs/` and an implementation plan in `docs/superpowers/plans/` **BEFORE** starting any significant code changes.
+- **Drift Discovery**: The system uses these files to detect overlaps between tasks. Skipping this step breaks the structural guard.
+
+### Drift Detection
+- Before creating a changelog, check if your plan overlaps with existing plans/specs in `docs/superpowers/`.
+- Use GitNexus impact analysis to verify if shared symbols create a coupling conflict.
+
+### Structural Integrity
+- If editing a core NestJS module (controllers, modules, providers), run `npx gitnexus impact <file>` first.
+- If the blast radius exceeds 5 upstream callers, request human review before proceeding.
+
+### Auto-Indexing
+- Ensure GitNexus is re-indexed after major structural changes using `npx gitnexus analyze --force`.
+
+---
+
+## TypeScript LSP Rules
+Leverage real-time compiler intelligence for all TypeScript development.
+
+### Steering Rules
+- **Diagnostics First**: Before starting a task, run `diagnostics` to ensure a clean baseline.
+- **Definitive Navigation**: Use `definition` to resolve imported types and service injections.
+- **Verified Refactoring**: Use `references` to find the exact blast radius of symbol changes.
+
+### Automatic Setup
+- If LSP tools are missing, trigger the Auto-Setup Routine in the `typescript-lsp` skill immediately.
+- Favor `vtsls` for NestJS projects to ensure decorator and metadata support.
+

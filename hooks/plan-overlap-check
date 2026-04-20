@@ -1,0 +1,67 @@
+#!/usr/bin/env bash
+# Plan Overlap Guard hook for superpowers plugin
+
+set -euo pipefail
+
+# Determine plugin root directory
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+PLUGIN_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
+PLANS_DIR="${PLUGIN_ROOT}/docs/superpowers/plans"
+
+if [ ! -d "${PLANS_DIR}" ]; then
+    exit 0
+fi
+
+# 1. Identify current plan (most recently modified file in plans dir)
+# We exclude the plans dir itself and look for .md files
+CURRENT_PLAN=$(ls -t "${PLANS_DIR}"/*.md 2>/dev/null | head -n 1)
+
+if [ -z "${CURRENT_PLAN}" ]; then
+    exit 0
+fi
+
+CURRENT_PLAN_NAME=$(basename "${CURRENT_PLAN}")
+
+# 2. Extract file links from the current plan
+# Matches file:///path/to/file or [file basename](file:///path/to/file)
+CURRENT_FILES=$(grep -oE "file:///[^)]+" "${CURRENT_PLAN}" | sort | uniq)
+
+if [ -z "${CURRENT_FILES}" ]; then
+    exit 0
+fi
+
+echo "🔍 Verifying plan overlap for: ${CURRENT_PLAN_NAME}..."
+
+# 3. Compare with other plans
+OVERLAP_FOUND=false
+for PLAN in "${PLANS_DIR}"/*.md; do
+    PLAN_NAME=$(basename "${PLAN}")
+    if [ "${PLAN_NAME}" == "${CURRENT_PLAN_NAME}" ]; then
+        continue
+    fi
+
+    # Check for overlapping file paths
+    # We use a temporary file to find intersections
+    INTERSECTION=$(grep -F -f <(echo "${CURRENT_FILES}") "${PLAN}" | grep -oE "file:///[^)]+" | sort | uniq || true)
+    
+    if [ -n "${INTERSECTION}" ]; then
+        if [ "${OVERLAP_FOUND}" = false ]; then
+            echo ""
+            echo "⚠️  [POTENTIAL DRIFT DETECTED]"
+            OVERLAP_FOUND=true
+        fi
+        echo "------------------------------------------------"
+        echo "Current plan modifies the same files as '${PLAN_NAME}':"
+        while read -r FILE; do
+            echo "  - ${FILE}"
+        done <<< "${INTERSECTION}"
+    fi
+done
+
+if [ "${OVERLAP_FOUND}" = true ]; then
+    echo "------------------------------------------------"
+    echo "ACTION REQUIRED: Please review the overlapping plans above to ensure No conflicting changes are being introduced."
+    echo ""
+fi
+
+exit 0

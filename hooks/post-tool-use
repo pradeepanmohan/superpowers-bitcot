@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# PostToolUse hook for superpowers plugin (GitNexus auto-reindex)
+
+set -euo pipefail
+
+# Only reindex on git commit or git merge
+if echo "$CLAUDE_TOOL_INPUT" | grep -qE 'git commit|git merge'; then
+    # Run async to avoid blocking
+    (npx gitnexus analyze --force > /dev/null 2>&1 &)
+fi
