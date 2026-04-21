@@ -1,0 +1,88 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup|clear|compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "touch hooks.started && bash ./hooks/run-hook.cmd session-start",
+            "async": false
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ./hooks/run-hook.cmd pre-tool-use",
+            "async": false
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ./hooks/run-hook.cmd guard-commit",
+            "async": false
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ./hooks/run-hook.cmd post-tool-use",
+            "async": true
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ./hooks/run-hook.cmd post-write-plan-check",
+            "async": false
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ./hooks/run-hook.cmd stop",
+            "async": false
+          },
+          {
+            "type": "command",
+            "command": "bash ./hooks/run-hook.cmd run-tests-before-commit",
+            "async": false
+          }
+        ]
+      }
+    ],
+    "TaskCompleted": [
+      {
+        "hooks": [
+          {
+            "type": "agent",
+            "prompt": "Task Completion Verification Against Plan\n\nTask Information: $ARGUMENTS\n\nVerify if the completed task matches the plan:\n\n1. Find the corresponding plan file in docs/superpowers/plans/ directory\n2. Parse all checklist items from the plan\n3. Check git diff HEAD~1 to see what was actually implemented\n4. Compare: Did the implementation complete all items in the plan?\n\nProvide a clear verification report:\n- [DONE] Checklist items completed\n- [MISSING] Missing or incomplete items (if any)\n- [WARNING] Items that need attention\n- Summary: Is the plan fully implemented or are there gaps?\n\nIf plan file doesn't exist, report that clearly.",
+            "statusMessage": "Verifying task completion against plan",
+            "timeout": 120
+          }
+        ]
+      }
+    ]
+  }
+}
