@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+# PostToolUse hook – auto-run plan-overlap-check when a superpowers plan file is written/edited.
+#
+# Triggered by: PostToolUse on Write | Edit | MultiEdit
+# Reads the Claude hook JSON from stdin to get the file_path that was just written.
+
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+
+# Read the JSON payload from stdin (Claude injects it automatically)
+PAYLOAD="$(cat)"
+
+# Extract the file_path from the tool input
+FILE_PATH="$(echo "${PAYLOAD}" | python3 -c "
+import sys, json
+try:
+    d = json.load(sys.stdin)
+    ti = d.get('tool_input') or d.get('hookSpecificInput', {}).get('toolInput') or {}
+    print(ti.get('file_path', ''))
+except Exception:
+    pass
+" 2>/dev/null || true)"
+
+# Only proceed if a plan .md file was written
+if echo "${FILE_PATH}" | grep -qE "docs/superpowers/plans/.*\.md$"; then
+    echo ""
+    echo "📋 Plan file detected: $(basename "${FILE_PATH}")"
+    echo "   Running plan overlap check automatically..."
+    echo ""
+    bash "${SCRIPT_DIR}/plan-overlap-check"
+fi
